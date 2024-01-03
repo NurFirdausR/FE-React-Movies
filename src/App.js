@@ -21,8 +21,8 @@ function App() {
               <Link to="/" className="list-group-item list-group-item-action">Home</Link>
               <Link to="/movies" className="list-group-item list-group-item-action">Movies</Link>
               <Link to="/genres" className="list-group-item list-group-item-action">Genres</Link>
-              <Link to="/admin/movie" className="list-group-item list-group-item-action">Add Movie</Link>
-              <Link to="/admin" className="list-group-item list-group-item-action">Manage Catalog</Link>
+              <Link to="/admin/movie/0" className="list-group-item list-group-item-action">Add Movie</Link>
+              <Link to="/manage-catalogue" className="list-group-item list-group-item-action">Manage Catalog</Link>
               <Link to="/graphql" className="list-group-item list-group-item-action">GraphQL</Link>
             </div>
           </nav>
