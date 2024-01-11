@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Input from "./form/input";
-import { useNavigate, useOutlet, useOutletContext } from "react-router-dom";
+import Input from "./form/Input";
+import { useNavigate,  useOutletContext } from "react-router-dom";
 
 
 
@@ -13,7 +13,7 @@ const Login = () => {
   const {setJwtToken} = useOutletContext();
   const {setAlertClassName} = useOutletContext();
   const {setAlertMessage} = useOutletContext();
-
+  const {toggleRefresh} = useOutletContext();
   const navigate = useNavigate();
 
 
@@ -40,16 +40,17 @@ const Login = () => {
         if (data.error) {
             setAlertClassName("alert-danger")
             setAlertMessage(data.message)
-      console.log(data)
         }else{
-         setJwtToken(data.access_token)
+          setJwtToken(data.access_token)
          setAlertClassName("d-none")
          setAlertMessage("")
+         toggleRefresh(true)
          navigate("/")
         }
     }).catch(error => {
       setAlertClassName("alert-danger")
       setAlertMessage(error.message)
+
     })
   };
   return (

@@ -1,15 +1,14 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import Alert from "./components/Alert";
 import { useEffect } from "react";
 
 
 function App() {
-  const [jwtToken, setJwtToken] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
   const [alertClassName, setAlertClassName] = useState("");
-  const [ticking,setTicking] = useState(false)
   const [tickInterval,setTickInterval] = useState(null)
+  const [jwtToken, setJwtToken] = useState(""); // Initialize jwtToken state with value from localStorage
   const navigate = useNavigate();
   const logOut = () => {
     const requestOptions = {
@@ -21,18 +20,25 @@ function App() {
       console.log("error logging out",error)
     })
     .finally(() => {
-      setJwtToken('')
+      setJwtToken("")
+      toggleRefresh(false)
     })
     navigate("/login")
   }
 
-  useEffect(() => {
-      if (jwtToken === "") {
-        const requestOptions  = {
-          method:"GET",
+  const toggleRefresh = useCallback((status) => {
+    console.log("clicked");
+
+    if (status) {
+      console.log("turning on ticking");
+      let i  = setInterval(() => {
+
+        const requestOptions = {
+          method: "GET",
           credentials: "include",
         }
-        fetch(`/refresh`,requestOptions)
+
+        fetch(`/refresh`, requestOptions)
         .then((response) => response.json())
         .then((data) => {
           if (data.access_token) {
@@ -40,30 +46,44 @@ function App() {
           }
         })
         .catch(error => {
-          console.log("user is not logged in",error)
+          console.log("user is not logged in",error);
         })
-      }
-  },[jwtToken])
-  
-  const toggleRefresh = () => {
-    console.log("clicked")
-    if (!ticking) {
-      console.log("turning on ticking");
-      let i = setInterval(() => {
-        console.log("this is will run every second")
-      }, 1000);
-      setTickInterval(i)
-      console.log("Setting tick interval to ",i);
-      setTicking(true)
-    }else{
+      }, 60000);
+      setTickInterval(i);
+      console.log("setting tick interval to", i);
+    } else {
       console.log("turning off ticking");
-      console.log("turning off tickInterval", tickInterval)
-      setTickInterval(null)
-      clearInterval(tickInterval)
-      setTicking(false)
-
+      console.log("turning off tickInterval", tickInterval);
+      setTickInterval(null);
+      clearInterval(tickInterval);
     }
-  }
+  }, [tickInterval])
+ useEffect(() => {
+
+  
+    // Fetch token on component mount if not already present
+    if (!jwtToken) {
+      const requestOptions = {
+        method: "GET",
+        credentials: "include",
+      };
+
+      fetch(`/refresh`, requestOptions)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.access_token) {
+            setJwtToken(data.access_token)
+            toggleRefresh(true);
+          }
+        })
+        .catch(error => {
+          console.log("Error fetching token:", error);
+          // Optionally handle error
+        });
+    }
+  }, [jwtToken, toggleRefresh]);
+  
+ 
   return (
     <div className="container">
       <div className="row">
@@ -129,17 +149,15 @@ function App() {
           </nav>
         </div>
         <div className="col-10">
-          <a  className="btn btn-outline-secondary" href="#!" onClick={toggleRefresh}>Toggle Ticking</a>
           <Alert message={alertMessage} className={alertClassName} />
 
           <Outlet
             context={{
               jwtToken,
               setJwtToken,
-              alertMessage,
               setAlertMessage,
-              alertClassName,
-              setAlertClassName
+              setAlertClassName,
+              toggleRefresh,
             }}
           />
         </div>
