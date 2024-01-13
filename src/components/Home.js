@@ -7,7 +7,7 @@ const Home = () => {
                     <h2>Find a movie to watch tonight</h2>
                     <hr/>
                     <Link to="/movies">
-                        <img src={Ticket}  />
+                        <img src={Ticket} alt=""  />
                     </Link>
             </div>
         </>
