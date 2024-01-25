@@ -21,7 +21,7 @@ const ManageCatalogue = () => {
           headers: headers
       }
 
-      fetch(`/admin/movies`, requestOptions)
+      fetch(`${process.env.REACT_APP_BACKEND}/admin/movies`, requestOptions)
       .then((response)=>response.json())
       .then((data)=> {
           setMovies(data)
@@ -50,7 +50,7 @@ const ManageCatalogue = () => {
                 method: "DELETE",
                 headers: headers
             }
-            fetch(`/admin/movies/delete/${id}`, requestOptions)
+            fetch(`${process.env.REACT_APP_BACKEND}/admin/movies/delete/${id}`, requestOptions)
             .then((response)=>response.json())
             .then((data) => {
                 setMovies(movies.filter(movie => movie.id !== id));
@@ -82,6 +82,7 @@ const ManageCatalogue = () => {
                             <th>Movie</th>
                             <th>Release Date</th>
                             <th>Rating</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
