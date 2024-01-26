@@ -19,7 +19,7 @@ const Movie = () => {
             method: "GET",
             headers: headers
         }
-        fetch(`http://localhost:8080/movies/${id}`,requestOptions)
+        fetch(`${process.env.REACT_APP_BACKEND}/movies/${id}`,requestOptions)
         .then((response)=>  response.json())
         .then((data)=> {
             setMovie(data)
@@ -38,7 +38,7 @@ const Movie = () => {
         }
         
 
-        fetch(`http://localhost:8080/movies`, requestOptions)
+        fetch(`${process.env.REACT_APP_BACKEND}/movies`, requestOptions)
         .then((response)=>response.json())
         .then((data)=> {
             setMovies(data)
@@ -70,7 +70,7 @@ const Movie = () => {
   return (
       
       <>
-        <div className="row">
+        <div className="row m-2">
         <div className="col-6 text-start">
             {currentMovieIndex !== 0 &&
             <button onClick={goToPreviousMovie}  className="btn btn-md btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-left" viewBox="0 0 16 16">

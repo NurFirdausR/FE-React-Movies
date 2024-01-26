@@ -17,7 +17,7 @@ const OneGenre = () => {
             headers : headers
         }
 
-        fetch(`/movies/genres/${id}`,requestOptions)
+        fetch(`${process.env.REACT_APP_BACKEND}/movies/genres/${id}`,requestOptions)
         .then((response) => response.json())
         .then((data) => {
             if (data.error) {
