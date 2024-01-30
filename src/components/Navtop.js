@@ -62,12 +62,12 @@ const Navtop = ({ jwtToken, logOut })=> {
                     </Link>
                   </li>
                   <li className="nav-item me-5">
-                    <Link
+                    {/* <Link
                       to="/graphql"
                       className="text-light list-group-item list-group-item-action"
                     >
                       Search
-                    </Link>
+                    </Link> */}
                   </li>
                 </>
               )}

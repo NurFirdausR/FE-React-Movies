@@ -1,10 +1,9 @@
 import { useCallback, useState } from "react";
-import {  Outlet, useNavigate } from "react-router-dom";
+import {  Outlet, useLocation, useNavigate } from "react-router-dom";
 import Alert from "./components/Alert";
 import { useEffect } from "react";
 import Navtop from "./components/Navtop";
 import bgimage from "./images/background.jpg"
-
 function App() {
   const [alertMessage, setAlertMessage] = useState("");
   const [alertClassName, setAlertClassName] = useState("");
@@ -26,6 +25,13 @@ function App() {
       });
     navigate("/login");
   };
+    const location = useLocation();
+
+  if (location.pathname === '/login') {
+      if (jwtToken) {
+        navigate("/");
+      }
+  }
 
   const toggleRefresh = useCallback(
     (status) => {
